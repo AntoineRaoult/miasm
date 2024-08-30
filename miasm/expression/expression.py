@@ -467,7 +467,7 @@ class Expr(object):
 
     "Parent class for Miasm Expressions"
 
-    __slots__ = ["_hash", "_repr", "_size"]
+    __slots__ = ["_hash", "_repr", "_size", "_datatype"]
 
     args2expr = {}
     canon_exprs = set()
@@ -482,12 +482,21 @@ class Expr(object):
         """
         # Common attribute
         self._size = size
+        self._datatype = None
 
         # Lazy cache needs
         self._hash = None
         self._repr = None
 
     size = property(lambda self: self._size)
+
+    def get_datatype(self):
+        return self._datatype
+    
+    def set_datatype(self, value):
+        self._datatype = value
+        
+    datatype = property(get_datatype, set_datatype)
 
     @staticmethod
     def get_object(expr_cls, args):

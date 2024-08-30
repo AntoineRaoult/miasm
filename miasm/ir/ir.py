@@ -652,10 +652,12 @@ class IRCFG(DiGraph):
             return
         for i, assignblk in enumerate(self._blocks[node]):
             for dst, src in viewitems(assignblk):
-                line = "%s = %s" % (
-                    color_expr_html(dst, self.loc_db),
-                    color_expr_html(src, self.loc_db)
-                )
+                line = color_expr_html(dst, self.loc_db)
+                if dst.datatype is not None:
+                    line += ": " + str(dst.datatype)
+                line += " = "
+                line += color_expr_html(src, self.loc_db)
+
                 if self._dot_offset:
                     yield [self.DotCellDescription(text="%-4d" % i, attr={}),
                            self.DotCellDescription(text=line, attr={})]

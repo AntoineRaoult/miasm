@@ -637,6 +637,17 @@ class DiGraph(object):
         """Performs a depth first search on the reversed graph from @head"""
         return self._walk_generic_first(head, -1, self.predecessors_iter)
 
+    def walk_dfs_post_order(self, head, visited=None):
+            if visited is None:
+                visited = set()
+            visited |= {head}
+
+            for b in self.successors_iter(head):
+                if b not in visited:
+                    yield from self.walk_dfs_post_order(b, visited)
+
+            yield head
+
     def has_loop(self):
         """Return True if the graph contains at least a cycle"""
         todo = list(self.nodes())
